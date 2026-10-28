@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Lock, AlertCircle, Loader2 } from 'lucide-react';
-import { signIn, getCurrentAdmin } from '../lib/authService';
+import { Lock, AlertCircle, Loader2, Play } from 'lucide-react';
+import { signIn, getCurrentAdmin, isDemoMode, demoSignIn } from '../lib/authService';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -52,6 +52,26 @@ export default function AdminLogin() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleDemoLogin = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const result = await demoSignIn();
+
+      if (!result.success) {
+        setError(result.error || 'Demo login failed');
+        return;
+      }
+
+      navigate('/admin/dashboard');
+    } catch (err) {
+      setError('Unable to enter demo mode. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (checking) {
@@ -138,6 +158,29 @@ export default function AdminLogin() {
               )}
             </button>
           </form>
+
+          {/* Demo Mode Button */}
+          {isDemoMode() && (
+            <div className="mt-6 pt-6 border-t border-white/5">
+              <button
+                onClick={handleDemoLogin}
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-2 py-3 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 disabled:opacity-50 disabled:cursor-not-allowed text-amber-300 font-semibold rounded-xl transition-all"
+              >
+                {loading ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <Play className="w-5 h-5" />
+                )}
+                Enter Demo Mode
+              </button>
+              <p className="text-xs text-amber-400/70 text-center mt-3">
+                Demo mode allows you to explore the admin dashboard without credentials.
+                <br />
+                All data shown is sample data for demonstration purposes.
+              </p>
+            </div>
+          )}
 
           <div className="mt-6 pt-6 border-t border-white/5">
             <p className="text-xs text-slate-500 text-center">

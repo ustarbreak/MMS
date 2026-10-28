@@ -7,6 +7,13 @@
 import { supabase, AdminProfile } from './supabase';
 
 /**
+ * Check if demo mode is enabled
+ */
+export function isDemoMode(): boolean {
+  return import.meta.env.VITE_DEMO_MODE === 'true';
+}
+
+/**
  * Sign in admin user
  */
 export async function signIn(email: string, password: string): Promise<{
@@ -61,6 +68,11 @@ export async function signIn(email: string, password: string): Promise<{
  * Sign out admin user
  */
 export async function signOut(): Promise<void> {
+  // Clear demo session if in demo mode
+  if (isDemoMode()) {
+    sessionStorage.removeItem('demo_admin');
+  }
+  
   await supabase.auth.signOut();
 }
 
@@ -72,6 +84,25 @@ export async function getCurrentAdmin(): Promise<{
   error?: string;
 }> {
   try {
+    // Demo mode: return demo admin without checking Supabase
+    if (isDemoMode()) {
+      const demoSession = sessionStorage.getItem('demo_admin');
+      if (demoSession === 'true') {
+        return {
+          admin: {
+            id: 'demo-admin-id',
+            email: 'demo@mediasmakers.com',
+            full_name: 'Demo Admin',
+            role: 'super_admin',
+            is_active: true,
+            created_at: new Date().toISOString(),
+            last_login_at: new Date().toISOString(),
+          },
+        };
+      }
+      return { error: 'Not authenticated' };
+    }
+
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
@@ -94,6 +125,22 @@ export async function getCurrentAdmin(): Promise<{
     // Do not log error details
     return { error: 'Failed to get admin profile' };
   }
+}
+
+/**
+ * Demo sign-in (bypasses authentication)
+ */
+export async function demoSignIn(): Promise<{
+  success: boolean;
+  error?: string;
+}> {
+  if (!isDemoMode()) {
+    return { success: false, error: 'Demo mode is not enabled' };
+  }
+
+  // Store demo session
+  sessionStorage.setItem('demo_admin', 'true');
+  return { success: true };
 }
 
 /**
