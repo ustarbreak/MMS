@@ -15,8 +15,96 @@ import {
   Loader2,
 } from 'lucide-react';
 import { AdminProfile, Order, ORDER_STATUS_LABELS, ORDER_STATUS_COLORS } from '../lib/supabase';
-import { getCurrentAdmin, signOut } from '../lib/authService';
+import { getCurrentAdmin, signOut, isDemoMode } from '../lib/authService';
 import { getAllOrders, getOrderStats } from '../lib/orderService';
+
+// Mock data for demo mode
+const mockOrders: Order[] = [
+  {
+    id: 'demo-order-1',
+    order_reference: 'MM-DEMO0001',
+    customer_name: 'Sarah Johnson',
+    customer_email: 'sarah.johnson@example.com',
+    customer_country: 'United States',
+    product_id: 'product-1',
+    product_name: 'Creator Audit',
+    price_eur: 9,
+    price_mad: 99,
+    currency: 'EUR',
+    requirements: { platform: 'Instagram', niche: 'Fitness' },
+    status: 'delivered',
+    payment_confirmed_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    payment_notes: null,
+    delivered_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    delivery_notes: null,
+    internal_notes: 'Demo order - delivered',
+    verification_token: null,
+    verification_token_expires_at: null,
+    verification_token_used: false,
+    created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'demo-order-2',
+    order_reference: 'MM-DEMO0002',
+    customer_name: 'Ahmed Benali',
+    customer_email: 'ahmed.benali@example.com',
+    customer_country: 'Morocco',
+    product_id: 'product-2',
+    product_name: 'Creator Content Pack',
+    price_eur: 19,
+    price_mad: 209,
+    currency: 'MAD',
+    requirements: { platform: 'TikTok', niche: 'Music' },
+    status: 'in_progress',
+    payment_confirmed_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    payment_notes: null,
+    delivered_at: null,
+    delivery_notes: null,
+    internal_notes: 'Demo order - in progress',
+    verification_token: null,
+    verification_token_expires_at: null,
+    verification_token_used: false,
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'demo-order-3',
+    order_reference: 'MM-DEMO0003',
+    customer_name: 'Emma Rodriguez',
+    customer_email: 'emma.rodriguez@example.com',
+    customer_country: 'Spain',
+    product_id: 'product-3',
+    product_name: 'Monthly Growth Partner',
+    price_eur: 149,
+    price_mad: 1639,
+    currency: 'EUR',
+    requirements: { platform: 'Instagram', niche: 'Coffee' },
+    status: 'pending_payment',
+    payment_confirmed_at: null,
+    payment_notes: null,
+    delivered_at: null,
+    delivery_notes: null,
+    internal_notes: 'Demo order - pending payment',
+    verification_token: null,
+    verification_token_expires_at: null,
+    verification_token_used: false,
+    created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+];
+
+const mockStats = {
+  total_orders: 3,
+  pending_payment: 1,
+  paid: 0,
+  in_progress: 1,
+  delivered: 1,
+  cancelled: 0,
+  refunded: 0,
+  total_revenue_eur: 158,
+  total_revenue_mad: 209,
+};
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -36,9 +124,16 @@ export default function AdminDashboard() {
       }
       setAdmin(admin);
 
-      await fetchOrders();
-      await fetchStats();
-      setLoading(false);
+      // Use mock data in demo mode, otherwise fetch from Supabase
+      if (isDemoMode()) {
+        setOrders(mockOrders);
+        setStats(mockStats);
+        setLoading(false);
+      } else {
+        await fetchOrders();
+        await fetchStats();
+        setLoading(false);
+      }
     }
 
     loadData();
