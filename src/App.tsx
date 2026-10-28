@@ -19,10 +19,15 @@ import OrderCreatorAudit from "./pages/OrderCreatorAudit";
 import OrderCreatorContentPack from "./pages/OrderCreatorContentPack";
 import OrderMonthlyGrowthPartner from "./pages/OrderMonthlyGrowthPartner";
 import OrderConfirmation from "./pages/OrderConfirmation";
-// Admin
+// Admin - Orders
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminOrderDetail from "./pages/AdminOrderDetail";
+// Admin - Service Delivery
+import ServiceDeliveryDashboard from "./pages/admin/ServiceDeliveryDashboard";
+import AuditGenerator from "./pages/admin/AuditGenerator";
+import ContentPackGenerator from "./pages/admin/ContentPackGenerator";
+import GrowthPartnerWorkspace from "./pages/admin/GrowthPartnerWorkspace";
 
 export default function App() {
   return (
@@ -51,10 +56,16 @@ export default function App() {
             <Route path="/order/monthly-growth-partner" element={<OrderMonthlyGrowthPartner />} />
             <Route path="/order-confirmation/:reference" element={<OrderConfirmation />} />
 
-            {/* Admin */}
+            {/* Admin - Orders */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/orders/:id" element={<AdminOrderDetail />} />
+
+            {/* Admin - Service Delivery */}
+            <Route path="/admin/service-delivery" element={<ServiceDeliveryDashboard />} />
+            <Route path="/admin/audit-generator" element={<AuditGenerator />} />
+            <Route path="/admin/content-pack-generator" element={<ContentPackGenerator />} />
+            <Route path="/admin/growth-partner" element={<GrowthPartnerWorkspace />} />
 
             {/* 404 */}
             <Route path="*" element={<NotFound />} />
