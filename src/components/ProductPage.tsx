@@ -161,14 +161,31 @@ export default function ProductPage({ product, otherProducts }: ProductPageProps
         </Link>
       </div>
 
-      <CTASection
-        title={`Ready to Get ${product.name}?`}
-        description={product.shortDescription}
-        ctaText={product.cta}
-        ctaLink="/contact"
-        secondaryText="See All Services"
-        secondaryLink="/services"
-      />
+      {/* Order Section */}
+      <section className="py-16 border-t border-white/5">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-2xl font-bold text-white mb-3">Ready to Get Started?</h2>
+            <p className="text-slate-400 mb-6">
+              Place your order now and we'll be in touch within 24 hours to confirm details and arrange payment.
+            </p>
+            <Link
+              to={`/order/${product.slug}`}
+              className="inline-flex items-center gap-2 px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-xl transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-brand-600/20"
+            >
+              {product.cta}
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+            <p className="text-xs text-slate-500 mt-4">
+              No payment required now — we'll arrange payment after you place your order.
+            </p>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }

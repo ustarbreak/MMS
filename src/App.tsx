@@ -14,6 +14,15 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import RefundPolicy from "./pages/RefundPolicy";
 import NotFound from "./pages/NotFound";
+// Order Management
+import OrderCreatorAudit from "./pages/OrderCreatorAudit";
+import OrderCreatorContentPack from "./pages/OrderCreatorContentPack";
+import OrderMonthlyGrowthPartner from "./pages/OrderMonthlyGrowthPartner";
+import OrderConfirmation from "./pages/OrderConfirmation";
+// Admin
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminOrderDetail from "./pages/AdminOrderDetail";
 
 export default function App() {
   return (
@@ -22,6 +31,7 @@ export default function App() {
         <Navbar />
         <main className="flex-1">
           <Routes>
+            {/* Public Pages */}
             <Route path="/" element={<Home />} />
             <Route path="/services" element={<Services />} />
             <Route path="/creator-audit" element={<CreatorAudit />} />
@@ -34,6 +44,19 @@ export default function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/refund-policy" element={<RefundPolicy />} />
+
+            {/* Order Flow */}
+            <Route path="/order/creator-audit" element={<OrderCreatorAudit />} />
+            <Route path="/order/creator-content-pack" element={<OrderCreatorContentPack />} />
+            <Route path="/order/monthly-growth-partner" element={<OrderMonthlyGrowthPartner />} />
+            <Route path="/order-confirmation/:reference" element={<OrderConfirmation />} />
+
+            {/* Admin */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/orders/:id" element={<AdminOrderDetail />} />
+
+            {/* 404 */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
