@@ -20,11 +20,13 @@ export async function signIn(email: string, password: string): Promise<{
     });
 
     if (error) {
-      return { success: false, error: error.message };
+      // Return generic error to prevent username enumeration
+      // Do not expose the actual Supabase error message
+      return { success: false, error: 'Invalid credentials' };
     }
 
     if (!data.user) {
-      return { success: false, error: 'Authentication failed' };
+      return { success: false, error: 'Invalid credentials' };
     }
 
     // Check if user is an admin
@@ -38,7 +40,8 @@ export async function signIn(email: string, password: string): Promise<{
     if (profileError || !profile) {
       // Sign out if not an admin
       await supabase.auth.signOut();
-      return { success: false, error: 'You do not have admin access' };
+      // Generic error - don't reveal that the account exists but isn't admin
+      return { success: false, error: 'Invalid credentials' };
     }
 
     // Update last login
@@ -49,8 +52,8 @@ export async function signIn(email: string, password: string): Promise<{
 
     return { success: true };
   } catch (error) {
-    console.error('Sign in error:', error);
-    return { success: false, error: 'An unexpected error occurred' };
+    // Do not log error details - could contain sensitive information
+    return { success: false, error: 'Unable to sign in. Please try again later.' };
   }
 }
 
@@ -88,7 +91,7 @@ export async function getCurrentAdmin(): Promise<{
 
     return { admin: profile };
   } catch (error) {
-    console.error('Get current admin error:', error);
+    // Do not log error details
     return { error: 'Failed to get admin profile' };
   }
 }

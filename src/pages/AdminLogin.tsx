@@ -35,14 +35,16 @@ export default function AdminLogin() {
       const result = await signIn(formData.email, formData.password);
 
       if (!result.success) {
-        setError(result.error || 'Login failed');
+        // Generic error message - don't reveal whether email or password was wrong
+        // This prevents username enumeration attacks
+        setError('Invalid credentials. Please check your email and password.');
         return;
       }
 
       navigate('/admin/dashboard');
     } catch (err) {
-      setError('An unexpected error occurred');
-      console.error('Login error:', err);
+      // Generic error - don't expose internal details
+      setError('Unable to sign in. Please try again later.');
     } finally {
       setLoading(false);
     }

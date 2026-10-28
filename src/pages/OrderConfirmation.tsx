@@ -19,19 +19,22 @@ export default function OrderConfirmation() {
         return;
       }
 
-      // Retrieve stored email from sessionStorage for verification
-      const storedEmail = sessionStorage.getItem(`order_email_${reference}`);
+      // Retrieve verification token from sessionStorage
+      // This token was generated server-side when the order was created
+      // It is cryptographically random, single-use, and expires after 24 hours
+      const verificationToken = sessionStorage.getItem(`order_token_${reference}`);
       
-      // Pass email for verification - prevents unauthorized access
-      const result = await getOrderByReference(reference, storedEmail || undefined);
+      // Pass token for verification - prevents unauthorized access
+      const result = await getOrderByReference(reference, verificationToken || undefined);
       
       if (result.error || !result.order) {
         // If verification fails, show a secure error message
+        // Do not reveal whether the reference or token was invalid
         setError('Unable to display order details. Please check your email for order confirmation or contact support with your order reference.');
       } else {
         setOrder(result.order);
-        // Clear the stored email after successful verification
-        sessionStorage.removeItem(`order_email_${reference}`);
+        // Clear the verification token after successful use (single-use enforcement)
+        sessionStorage.removeItem(`order_token_${reference}`);
       }
       setLoading(false);
     }

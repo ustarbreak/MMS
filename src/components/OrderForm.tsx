@@ -47,12 +47,15 @@ export default function OrderForm({ product }: OrderFormProps) {
         return;
       }
 
-      // Store email in sessionStorage for order confirmation verification
+      // Store verification token in sessionStorage for order confirmation
+      // The token is cryptographically random and single-use
       // This is cleared after viewing the confirmation page
-      sessionStorage.setItem(
-        `order_email_${result.order.order_reference}`,
-        formData.customer_email.toLowerCase()
-      );
+      if (result.order.verification_token) {
+        sessionStorage.setItem(
+          `order_token_${result.order.order_reference}`,
+          result.order.verification_token
+        );
+      }
 
       // Navigate to confirmation page
       navigate(`/order-confirmation/${result.order.order_reference}`);

@@ -65,6 +65,9 @@ export interface Order {
   delivered_at: string | null;
   delivery_notes: string | null;
   internal_notes: string | null;
+  verification_token: string | null;
+  verification_token_expires_at: string | null;
+  verification_token_used: boolean;
   created_at: string;
   updated_at: string;
 }

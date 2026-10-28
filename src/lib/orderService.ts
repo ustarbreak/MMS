@@ -104,13 +104,26 @@ export async function validateOrder(input: OrderInput): Promise<ValidationResult
 // ─── ORDER CREATION ───────────────────────────────────────────────────────────
 
 /**
+ * Generate cryptographically secure random token
+ * Uses Web Crypto API for true randomness (not Math.random)
+ */
+function generateSecureToken(): string {
+  const array = new Uint8Array(32); // 256 bits of randomness
+  crypto.getRandomValues(array);
+  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
+/**
  * Generate unique order reference
+ * Uses cryptographically secure random for better security
  */
 function generateOrderReference(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const array = new Uint8Array(8);
+  crypto.getRandomValues(array);
   let result = 'MM-';
   for (let i = 0; i < 8; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
+    result += chars.charAt(array[i] % chars.length);
   }
   return result;
 }
@@ -191,6 +204,10 @@ export async function createOrder(input: OrderInput): Promise<{
       };
     }
 
+    // Generate verification token for secure customer access
+    const verificationToken = generateSecureToken();
+    const tokenExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(); // 24 hours
+
     // Create order
     const { data: order, error: orderError } = await supabase
       .from('orders')
@@ -206,12 +223,14 @@ export async function createOrder(input: OrderInput): Promise<{
         currency: input.currency,
         requirements: sanitizedInput.requirements,
         status: 'pending_payment',
+        verification_token: verificationToken,
+        verification_token_expires_at: tokenExpiresAt,
+        verification_token_used: false,
       })
       .select()
       .single();
 
     if (orderError) {
-      console.error('Order creation error:', orderError);
       return { success: false, error: 'Failed to create order. Please try again.' };
     }
 
@@ -223,7 +242,14 @@ export async function createOrder(input: OrderInput): Promise<{
       notes: 'Order created',
     });
 
-    return { success: true, order };
+    // Return order with verification token for customer
+    return { 
+      success: true, 
+      order: {
+        ...order,
+        verification_token: verificationToken, // Include token for customer
+      }
+    };
   } catch (error) {
     console.error('Unexpected error creating order:', error);
     return { success: false, error: 'An unexpected error occurred. Please try again.' };
@@ -233,30 +259,17 @@ export async function createOrder(input: OrderInput): Promise<{
 // ─── ORDER QUERIES ────────────────────────────────────────────────────────────
 
 /**
- * Get order by reference (for customer viewing)
- * SECURITY: Requires email verification to prevent unauthorized access
+ * Get order by reference with verification token (for customer viewing)
+ * SECURITY: Requires cryptographic verification token to prevent unauthorized access
  */
-export async function getOrderByReference(reference: string, customerEmail?: string): Promise<{
+export async function getOrderByReference(
+  reference: string, 
+  verificationToken?: string
+): Promise<{
   order?: Order;
   error?: string;
 }> {
-  // If email is provided, verify it matches the order (customer viewing their own order)
-  if (customerEmail) {
-    const { data, error } = await supabase
-      .from('orders')
-      .select('*')
-      .eq('order_reference', reference)
-      .eq('customer_email', customerEmail.toLowerCase())
-      .single();
-
-    if (error) {
-      return { error: 'Order not found or email does not match' };
-    }
-
-    return { order: data };
-  }
-
-  // For admin access, check if user is authenticated as admin
+  // First, check if user is authenticated as admin
   const { data: { user } } = await supabase.auth.getUser();
   if (user) {
     const { data: adminProfile } = await supabase
@@ -267,7 +280,7 @@ export async function getOrderByReference(reference: string, customerEmail?: str
       .single();
 
     if (adminProfile) {
-      // Admin can view any order
+      // Admin can view any order without token
       const { data, error } = await supabase
         .from('orders')
         .select('*')
@@ -282,8 +295,43 @@ export async function getOrderByReference(reference: string, customerEmail?: str
     }
   }
 
-  // No authentication - deny access
-  return { error: 'Authentication required' };
+  // Customer access requires verification token
+  if (!verificationToken) {
+    return { error: 'Verification token required' };
+  }
+
+  // Query for order matching both reference AND token
+  const { data: order, error } = await supabase
+    .from('orders')
+    .select('*')
+    .eq('order_reference', reference)
+    .eq('verification_token', verificationToken)
+    .single();
+
+  if (error || !order) {
+    return { error: 'Invalid order reference or verification token' };
+  }
+
+  // Check if token has expired
+  if (order.verification_token_expires_at) {
+    const expiresAt = new Date(order.verification_token_expires_at);
+    if (expiresAt < new Date()) {
+      return { error: 'Verification token has expired. Please contact support.' };
+    }
+  }
+
+  // Check if token has already been used (single-use)
+  if (order.verification_token_used) {
+    return { error: 'Verification token has already been used. Please contact support.' };
+  }
+
+  // Mark token as used (single-use enforcement)
+  await supabase
+    .from('orders')
+    .update({ verification_token_used: true })
+    .eq('id', order.id);
+
+  return { order };
 }
 
 /**

@@ -1,25 +1,42 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Mail, MapPin, Clock, Send, CheckCircle } from "lucide-react";
+import { Mail, MapPin, Clock, Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import { contactContent, brand } from "../config/site";
 import PageHero from "../components/PageHero";
+import { submitContactForm, ContactFormData } from "../lib/contactService";
 
 export default function Contact() {
   const content = contactContent;
   const [submitted, setSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
     subject: "",
     message: "",
   });
+  
+  // Abuse protection: honeypot and timestamp
+  const [honeypot, setHoneypot] = useState("");
+  const formLoadTime = useRef(Date.now());
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In production, this would send to a backend or service like Formspree
-    // For now, we simulate submission
-    // NOTE: Form data is not logged to console for security
-    setSubmitted(true);
+    setSubmitting(true);
+    setError(null);
+
+    const result = await submitContactForm(formData, honeypot, formLoadTime.current);
+
+    if (result.success) {
+      setSubmitted(true);
+      setFormData({ name: "", email: "", subject: "", message: "" });
+      formLoadTime.current = Date.now(); // Reset for next submission
+    } else {
+      setError(result.error || "Failed to send message");
+    }
+
+    setSubmitting(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -97,7 +114,7 @@ export default function Contact() {
                     <button
                       onClick={() => {
                         setSubmitted(false);
-                        setFormData({ name: "", email: "", subject: "", message: "" });
+                        setError(null);
                       }}
                       className="mt-4 text-sm text-brand-400 hover:text-brand-300"
                     >
@@ -106,6 +123,25 @@ export default function Contact() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="bg-surface-800/50 border border-white/5 rounded-xl p-7">
+                    {/* Honeypot field - hidden from users, filled by bots */}
+                    <div className="absolute left-[-9999px]" aria-hidden="true">
+                      <input
+                        type="text"
+                        name="website"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={honeypot}
+                        onChange={(e) => setHoneypot(e.target.value)}
+                      />
+                    </div>
+
+                    {error && (
+                      <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-start gap-3">
+                        <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                        <p className="text-sm text-red-300">{error}</p>
+                      </div>
+                    )}
+
                     <div className="space-y-5">
                       <div>
                         <label htmlFor="name" className="block text-sm text-slate-300 mb-1.5">
@@ -116,6 +152,7 @@ export default function Contact() {
                           id="name"
                           name="name"
                           required
+                          maxLength={100}
                           value={formData.name}
                           onChange={handleChange}
                           className="w-full px-4 py-2.5 bg-surface-700/50 border border-white/10 rounded-lg text-white text-sm placeholder-slate-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
@@ -132,6 +169,7 @@ export default function Contact() {
                           id="email"
                           name="email"
                           required
+                          maxLength={255}
                           value={formData.email}
                           onChange={handleChange}
                           className="w-full px-4 py-2.5 bg-surface-700/50 border border-white/10 rounded-lg text-white text-sm placeholder-slate-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
@@ -166,6 +204,7 @@ export default function Contact() {
                           id="message"
                           name="message"
                           required
+                          maxLength={5000}
                           rows={5}
                           value={formData.message}
                           onChange={handleChange}
@@ -176,10 +215,20 @@ export default function Contact() {
 
                       <button
                         type="submit"
-                        className="w-full flex items-center justify-center gap-2 py-3 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-brand-600/20"
+                        disabled={submitting}
+                        className="w-full flex items-center justify-center gap-2 py-3 bg-brand-600 hover:bg-brand-500 disabled:bg-brand-600/50 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-brand-600/20"
                       >
-                        <Send className="w-4 h-4" />
-                        {content.form.submit}
+                        {submitting ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-4 h-4" />
+                            {content.form.submit}
+                          </>
+                        )}
                       </button>
 
                       <p className="text-xs text-slate-500 text-center">

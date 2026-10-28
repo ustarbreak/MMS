@@ -76,6 +76,11 @@ CREATE TABLE IF NOT EXISTS orders (
   -- Internal notes (admin only)
   internal_notes TEXT,
   
+  -- Verification token for customer access (cryptographically random, single-use)
+  verification_token TEXT,
+  verification_token_expires_at TIMESTAMPTZ,
+  verification_token_used BOOLEAN DEFAULT false,
+  
   -- Timestamps
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
