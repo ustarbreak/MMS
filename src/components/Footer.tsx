@@ -18,6 +18,7 @@ const footerLinks = {
     { to: "/privacy-policy", label: "Privacy Policy" },
     { to: "/terms-of-service", label: "Terms of Service" },
     { to: "/refund-policy", label: "Refund Policy" },
+    { to: "/admin/login", label: "Admin Login" },
   ],
 };
 
