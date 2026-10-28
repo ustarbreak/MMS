@@ -234,22 +234,56 @@ export async function createOrder(input: OrderInput): Promise<{
 
 /**
  * Get order by reference (for customer viewing)
+ * SECURITY: Requires email verification to prevent unauthorized access
  */
-export async function getOrderByReference(reference: string): Promise<{
+export async function getOrderByReference(reference: string, customerEmail?: string): Promise<{
   order?: Order;
   error?: string;
 }> {
-  const { data, error } = await supabase
-    .from('orders')
-    .select('*')
-    .eq('order_reference', reference)
-    .single();
+  // If email is provided, verify it matches the order (customer viewing their own order)
+  if (customerEmail) {
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*')
+      .eq('order_reference', reference)
+      .eq('customer_email', customerEmail.toLowerCase())
+      .single();
 
-  if (error) {
-    return { error: 'Order not found' };
+    if (error) {
+      return { error: 'Order not found or email does not match' };
+    }
+
+    return { order: data };
   }
 
-  return { order: data };
+  // For admin access, check if user is authenticated as admin
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    const { data: adminProfile } = await supabase
+      .from('admin_profiles')
+      .select('id')
+      .eq('id', user.id)
+      .eq('is_active', true)
+      .single();
+
+    if (adminProfile) {
+      // Admin can view any order
+      const { data, error } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('order_reference', reference)
+        .single();
+
+      if (error) {
+        return { error: 'Order not found' };
+      }
+
+      return { order: data };
+    }
+  }
+
+  // No authentication - deny access
+  return { error: 'Authentication required' };
 }
 
 /**

@@ -18,7 +18,7 @@ export default function Contact() {
     e.preventDefault();
     // In production, this would send to a backend or service like Formspree
     // For now, we simulate submission
-    console.log("Form submitted:", formData);
+    // NOTE: Form data is not logged to console for security
     setSubmitted(true);
   };
 

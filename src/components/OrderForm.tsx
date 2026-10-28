@@ -47,6 +47,13 @@ export default function OrderForm({ product }: OrderFormProps) {
         return;
       }
 
+      // Store email in sessionStorage for order confirmation verification
+      // This is cleared after viewing the confirmation page
+      sessionStorage.setItem(
+        `order_email_${result.order.order_reference}`,
+        formData.customer_email.toLowerCase()
+      );
+
       // Navigate to confirmation page
       navigate(`/order-confirmation/${result.order.order_reference}`);
     } catch (err) {

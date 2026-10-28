@@ -19,11 +19,19 @@ export default function OrderConfirmation() {
         return;
       }
 
-      const result = await getOrderByReference(reference);
+      // Retrieve stored email from sessionStorage for verification
+      const storedEmail = sessionStorage.getItem(`order_email_${reference}`);
+      
+      // Pass email for verification - prevents unauthorized access
+      const result = await getOrderByReference(reference, storedEmail || undefined);
+      
       if (result.error || !result.order) {
-        setError(result.error || 'Order not found');
+        // If verification fails, show a secure error message
+        setError('Unable to display order details. Please check your email for order confirmation or contact support with your order reference.');
       } else {
         setOrder(result.order);
+        // Clear the stored email after successful verification
+        sessionStorage.removeItem(`order_email_${reference}`);
       }
       setLoading(false);
     }
