@@ -13,6 +13,7 @@ const footerLinks = {
     { to: "/how-it-works", label: "How It Works" },
     { to: "/contact", label: "Contact" },
     { to: "/services", label: "All Services" },
+    { to: "/client-portal", label: "Track Order" },
   ],
   legal: [
     { to: "/privacy-policy", label: "Privacy Policy" },

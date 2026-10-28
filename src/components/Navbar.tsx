@@ -11,6 +11,7 @@ const navLinks = [
   { to: "/how-it-works", label: "How It Works" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
+  { to: "/client-portal", label: "Track Order" },
 ];
 
 export default function Navbar() {
@@ -75,6 +76,17 @@ export default function Navbar() {
             >
               Get Started
             </Link>
+            <Link
+              to="/admin/login"
+              className="ml-2 p-2.5 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+              title="Admin Login"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                <polyline points="10 17 15 12 10 7"/>
+                <line x1="15" y1="12" x2="3" y2="12"/>
+              </svg>
+            </Link>
           </div>
 
           {/* Mobile Toggle */}
@@ -117,6 +129,12 @@ export default function Navbar() {
                 className="block mt-3 px-4 py-3 text-center text-sm font-semibold text-white bg-brand-600 rounded-lg"
               >
                 Get Started
+              </Link>
+              <Link
+                to="/admin/login"
+                className="block mt-2 px-4 py-3 text-center text-sm text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+              >
+                Admin Login
               </Link>
             </div>
           </motion.div>

@@ -335,6 +335,48 @@ export async function getOrderByReference(
 }
 
 /**
+ * Get order status for client portal (public access, limited info)
+ * Returns only status and basic order info, no sensitive customer data
+ */
+export async function getOrderStatusForClient(reference: string): Promise<{
+  order?: {
+    order_reference: string;
+    product_name: string;
+    status: OrderStatus;
+    created_at: string;
+    payment_confirmed_at: string | null;
+    delivered_at: string | null;
+    price_eur: number;
+    price_mad: number;
+    currency: string;
+  };
+  error?: string;
+}> {
+  // Query for order with limited fields (no customer PII)
+  const { data: order, error } = await supabase
+    .from('orders')
+    .select(`
+      order_reference,
+      product_name,
+      status,
+      created_at,
+      payment_confirmed_at,
+      delivered_at,
+      price_eur,
+      price_mad,
+      currency
+    `)
+    .eq('order_reference', reference)
+    .single();
+
+  if (error || !order) {
+    return { error: 'Order not found' };
+  }
+
+  return { order };
+}
+
+/**
  * Get all orders (admin only)
  */
 export async function getAllOrders(filters?: {

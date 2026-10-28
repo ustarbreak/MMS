@@ -21,6 +21,7 @@ const OrderCreatorAudit = lazy(() => import("./pages/OrderCreatorAudit"));
 const OrderCreatorContentPack = lazy(() => import("./pages/OrderCreatorContentPack"));
 const OrderMonthlyGrowthPartner = lazy(() => import("./pages/OrderMonthlyGrowthPartner"));
 const OrderConfirmation = lazy(() => import("./pages/OrderConfirmation"));
+const ClientPortal = lazy(() => import("./pages/ClientPortal"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const AdminOrderDetail = lazy(() => import("./pages/AdminOrderDetail"));
@@ -65,6 +66,7 @@ export default function App() {
               <Route path="/order/creator-content-pack" element={<OrderCreatorContentPack />} />
               <Route path="/order/monthly-growth-partner" element={<OrderMonthlyGrowthPartner />} />
               <Route path="/order-confirmation/:reference" element={<OrderConfirmation />} />
+              <Route path="/client-portal" element={<ClientPortal />} />
 
               {/* Admin - Orders (lazy loaded) */}
               <Route path="/admin/login" element={<AdminLogin />} />
