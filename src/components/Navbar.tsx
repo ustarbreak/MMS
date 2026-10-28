@@ -11,7 +11,6 @@ const navLinks = [
   { to: "/how-it-works", label: "How It Works" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
-  { to: "/client-portal", label: "Track Order" },
 ];
 
 export default function Navbar() {
@@ -77,6 +76,17 @@ export default function Navbar() {
               Get Started
             </Link>
             <Link
+              to="/client-portal"
+              className="ml-2 px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all border border-white/10 flex items-center gap-1.5"
+              title="Track Your Order"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              Track Order
+            </Link>
+            <Link
               to="/admin/login"
               className="ml-2 px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all border border-white/10"
               title="Admin Login"
@@ -125,6 +135,12 @@ export default function Navbar() {
                 className="block mt-3 px-4 py-3 text-center text-sm font-semibold text-white bg-brand-600 rounded-lg"
               >
                 Get Started
+              </Link>
+              <Link
+                to="/client-portal"
+                className="block mt-2 px-4 py-3 text-center text-sm text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+              >
+                Track Order
               </Link>
               <Link
                 to="/admin/login"
