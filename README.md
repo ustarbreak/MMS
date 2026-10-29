@@ -107,7 +107,9 @@ mediasmakers/
 │   │   ├── ProductPage.tsx    # Product detail page
 │   │   └── ...
 │   ├── pages/                 # Page components
-│   │   ├── Home.tsx           # Homepage
+│   │   ├── Home.tsx           # Cinematic landing page (hero, trust, pricing,
+│   │   │                      #   how-it-works, promise, artists, AI snapshot demo, final CTA)
+│   │   ├── GetStarted.tsx     # Multi-step order experience (/get-started)
 │   │   ├── OrderConfirmation.tsx
 │   │   ├── AdminLogin.tsx
 │   │   ├── AdminDashboard.tsx
