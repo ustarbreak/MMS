@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import CreatorAudit from "./pages/CreatorAudit";
@@ -21,6 +22,7 @@ const OrderCreatorAudit = lazy(() => import("./pages/OrderCreatorAudit"));
 const OrderCreatorContentPack = lazy(() => import("./pages/OrderCreatorContentPack"));
 const OrderMonthlyGrowthPartner = lazy(() => import("./pages/OrderMonthlyGrowthPartner"));
 const OrderConfirmation = lazy(() => import("./pages/OrderConfirmation"));
+const GetStarted = lazy(() => import("./pages/GetStarted"));
 const ClientPortal = lazy(() => import("./pages/ClientPortal"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
@@ -42,6 +44,7 @@ function PageLoader() {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-1">
@@ -66,6 +69,7 @@ export default function App() {
               <Route path="/order/creator-content-pack" element={<OrderCreatorContentPack />} />
               <Route path="/order/monthly-growth-partner" element={<OrderMonthlyGrowthPartner />} />
               <Route path="/order-confirmation/:reference" element={<OrderConfirmation />} />
+              <Route path="/get-started" element={<GetStarted />} />
               <Route path="/client-portal" element={<ClientPortal />} />
 
               {/* Admin - Orders (lazy loaded) */}

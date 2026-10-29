@@ -172,9 +172,9 @@ export const homeContent = {
   hero: {
     headline: "Grow Your Audience.\nBuild Your Brand.",
     subheadline:
-      "MediasMakers helps creators, independent musicians, streamers, and small businesses grow their social media presence with AI-assisted strategies and expert guidance.",
-    cta: "See Our Services",
-    secondaryCta: "How It Works",
+      "Your next stage of growth starts with a strategy. Get AI-assisted insights, personalized content roadmaps, and practical guidance designed around your goals — without expensive agencies or fake followers.",
+    cta: "Build My Growth Plan",
+    secondaryCta: "Explore Our Services",
   },
 
   problems: {
