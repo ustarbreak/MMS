@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MediasMakers — AI-Assisted Creator Growth & Social Media Marketing</title>
+    <meta name="description" content="MediasMakers helps creators, musicians, and small businesses grow on social media with AI-assisted strategies, content packs, and growth partnerships. Based in Morocco, serving globally." />
+    <meta name="keywords" content="social media marketing, creator growth, content strategy, Morocco, AI marketing, musician marketing, small business marketing" />
+    <meta name="author" content="MediasMakers" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://mediasmakers.com/" />
+
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="MediasMakers — AI-Assisted Creator Growth & Social Media Marketing" />
+    <meta property="og:description" content="Grow your audience with AI-assisted strategies, content packs, and growth partnerships for creators, musicians, and small businesses." />
+    <meta property="og:url" content="https://mediasmakers.com/" />
+    <meta property="og:site_name" content="MediasMakers" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MediasMakers — AI-Assisted Creator Growth" />
+    <meta name="twitter:description" content="Grow your audience with AI-assisted strategies, content packs, and growth partnerships." />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230891b2'/><text x='50' y='68' font-family='system-ui,sans-serif' font-size='52' font-weight='bold' fill='white' text-anchor='middle'>M</text></svg>" />
+
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <style>
+      html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
+      body { background-color: #060a14; color: #e2e8f0; }
+    </style>
+
+    <script>
+      (function () {
+        if (window.self === window.top) return;
+        var reported = {};
+        window.addEventListener("error", function (event) {
+          if (!event || !event.message) return;
+          var key = event.message + "|" + (event.filename || "") + "|" + (event.lineno || 0);
+          if (reported[key]) return;
+          reported[key] = true;
+          try {
+            window.parent.postMessage({
+              type: "sandbox-runtime-error",
+              payload: {
+                message: String(event.message).slice(0, 500),
+                filename: event.filename || "",
+                lineno: event.lineno || 0,
+                colno: event.colno || 0,
+                stack: event.error && event.error.stack ? String(event.error.stack).slice(0, 2000) : ""
+              }
+            }, "*");
+          } catch (e) { /* ignore */ }
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
