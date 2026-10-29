@@ -119,6 +119,18 @@ body {
   animation: mm-slow-float 9s ease-in-out infinite;
 }
 
+/* Slow Ken-Burns zoom for the full-width hero background image */
+@keyframes mm-hero-zoom {
+  0%   { transform: scale(1.02); }
+  50%  { transform: scale(1.08); }
+  100% { transform: scale(1.02); }
+}
+
+.animate-hero-zoom {
+  animation: mm-hero-zoom 24s ease-in-out infinite;
+  will-change: transform;
+}
+
 /* ─── Accessibility ────────────────────────────────────────────────────────── */
 /* Visible focus states for keyboard navigation */
 :focus-visible {
@@ -136,7 +148,8 @@ body {
   .animate-float,
   .animate-pulse-glow,
   .animate-gradient,
-  .animate-slow-float {
+  .animate-slow-float,
+  .animate-hero-zoom {
     animation: none !important;
   }
   *,
