@@ -87,13 +87,6 @@ export default function Navbar() {
               Track Order
             </Link>
             <Link
-              to="/client-portal"
-              className="px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-              title="Client Portal — track an order with your reference"
-            >
-              Client Login
-            </Link>
-            <Link
               to="/admin/login"
               className="ml-2 px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all border border-white/10"
               title="Admin Login"
@@ -147,7 +140,7 @@ export default function Navbar() {
                 to="/client-portal"
                 className="block mt-2 px-4 py-3 text-center text-sm text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
               >
-                Track Order · Client Login
+                Track Order
               </Link>
               <Link
                 to="/admin/login"

@@ -26,7 +26,7 @@ describe('Order Validation', () => {
       const result = await validateOrder({
         customer_name: '',
         customer_email: 'test@example.com',
-        customer_country: 'Morocco',
+        customer_country: 'France',
         product_id: 'test-product-id',
         currency: 'EUR',
       });
@@ -38,7 +38,7 @@ describe('Order Validation', () => {
       const result = await validateOrder({
         customer_name: 'A',
         customer_email: 'test@example.com',
-        customer_country: 'Morocco',
+        customer_country: 'France',
         product_id: 'test-product-id',
         currency: 'EUR',
       });
@@ -50,7 +50,7 @@ describe('Order Validation', () => {
       const result = await validateOrder({
         customer_name: 'A'.repeat(101),
         customer_email: 'test@example.com',
-        customer_country: 'Morocco',
+        customer_country: 'France',
         product_id: 'test-product-id',
         currency: 'EUR',
       });
@@ -62,7 +62,7 @@ describe('Order Validation', () => {
       const result = await validateOrder({
         customer_name: 'Test User',
         customer_email: 'not-an-email',
-        customer_country: 'Morocco',
+        customer_country: 'France',
         product_id: 'test-product-id',
         currency: 'EUR',
       });
@@ -74,7 +74,7 @@ describe('Order Validation', () => {
       const result = await validateOrder({
         customer_name: 'Test User',
         customer_email: '',
-        customer_country: 'Morocco',
+        customer_country: 'France',
         product_id: 'test-product-id',
         currency: 'EUR',
       });
@@ -98,7 +98,7 @@ describe('Order Validation', () => {
       const result = await validateOrder({
         customer_name: 'Test User',
         customer_email: 'test@example.com',
-        customer_country: 'Morocco',
+        customer_country: 'France',
         product_id: '',
         currency: 'EUR',
       });
@@ -110,7 +110,7 @@ describe('Order Validation', () => {
       const result = await validateOrder({
         customer_name: 'Test User',
         customer_email: 'test@example.com',
-        customer_country: 'Morocco',
+        customer_country: 'France',
         product_id: 'test-product-id',
         currency: 'USD' as any,
       });
@@ -122,7 +122,7 @@ describe('Order Validation', () => {
       const result = await validateOrder({
         customer_name: 'Test User',
         customer_email: 'test@example.com',
-        customer_country: 'Morocco',
+        customer_country: 'France',
         product_id: 'test-product-id',
         currency: 'EUR',
       });
@@ -134,7 +134,7 @@ describe('Order Validation', () => {
       const result = await validateOrder({
         customer_name: 'Test User',
         customer_email: 'test@example.com',
-        customer_country: 'Morocco',
+        customer_country: 'France',
         product_id: 'test-product-id',
         currency: 'MAD',
       });

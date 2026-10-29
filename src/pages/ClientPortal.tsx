@@ -67,8 +67,8 @@ export default function ClientPortal() {
   return (
     <div>
       <PageHero
-        title="Client Portal"
-        subtitle="Track your order status and view your order details"
+        title="Track Your Order"
+        subtitle="Enter your order reference to check status and view your order details"
         badge="Order Tracking"
       />
 

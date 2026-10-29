@@ -240,7 +240,7 @@ export default function GetStarted() {
                   </div>
                   <div>
                     <label htmlFor="gs-country" className="block text-xs text-slate-300 mb-1.5">Country *</label>
-                    <input id="gs-country" value={form.customer_country} onChange={(e) => setForm({ ...form, customer_country: e.target.value })} className={inputClass("customer_country")} placeholder="e.g., Morocco" />
+                    <input id="gs-country" value={form.customer_country} onChange={(e) => setForm({ ...form, customer_country: e.target.value })} className={inputClass("customer_country")} placeholder="e.g., France" />
                     {fieldErrors.customer_country && <p className="text-xs text-red-400 mt-1.5">{fieldErrors.customer_country}</p>}
                   </div>
                 </div>

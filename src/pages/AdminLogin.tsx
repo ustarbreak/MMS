@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, AlertCircle, Loader2, Play } from 'lucide-react';
-import { signIn, getCurrentAdmin, isDemoMode, demoSignIn } from '../lib/authService';
+import { signIn, getCurrentAdmin, effectiveDemoMode, demoSignIn, enableForcedDemoMode } from '../lib/authService';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -59,6 +59,9 @@ export default function AdminLogin() {
     setError(null);
 
     try {
+      // Frontend-only preview: enables the clearly-labeled sample-data admin UI.
+      // This does not authenticate against (or modify) any backend data.
+      enableForcedDemoMode();
       const result = await demoSignIn();
 
       if (!result.success) {
@@ -159,28 +162,26 @@ export default function AdminLogin() {
             </button>
           </form>
 
-          {/* Demo Mode Button */}
-          {isDemoMode() && (
-            <div className="mt-6 pt-6 border-t border-white/5">
-              <button
-                onClick={handleDemoLogin}
-                disabled={loading}
-                className="w-full flex items-center justify-center gap-2 py-3 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 disabled:opacity-50 disabled:cursor-not-allowed text-amber-300 font-semibold rounded-xl transition-all"
-              >
-                {loading ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <Play className="w-5 h-5" />
-                )}
-                Enter Demo Mode
-              </button>
-              <p className="text-xs text-amber-400/70 text-center mt-3">
-                Demo mode allows you to explore the admin dashboard without credentials.
-                <br />
-                All data shown is sample data for demonstration purposes.
-              </p>
-            </div>
-          )}
+          {/* Demo Mode Button — always available as a frontend-only preview */}
+          <div className="mt-6 pt-6 border-t border-white/5">
+            <button
+              onClick={handleDemoLogin}
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 py-3 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 disabled:opacity-50 disabled:cursor-not-allowed text-amber-300 font-semibold rounded-xl transition-all"
+            >
+              {loading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <Play className="w-5 h-5" />
+              )}
+              Enter Admin Demo
+            </button>
+            <p className="text-xs text-amber-400/70 text-center mt-3">
+              Preview the admin console without credentials.
+              <br />
+              All data shown is sample data for demonstration purposes — no backend access.
+            </p>
+          </div>
 
           <div className="mt-6 pt-6 border-t border-white/5">
             <p className="text-xs text-slate-500 text-center">

@@ -74,7 +74,7 @@ export default function FinalCTA() {
 
         <Reveal delay={0.2} className="text-center">
           <p className="text-xs text-slate-500">
-            Morocco based · Serving creators globally · Transparent pricing · No fake engagement, ever
+            Serving creators globally · Transparent pricing · No fake engagement, ever
           </p>
         </Reveal>
       </div>
