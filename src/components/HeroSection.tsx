@@ -46,15 +46,15 @@ export default function HeroSection() {
             decoding="async"
             fetchPriority="high"
             className={
-              "w-full h-full object-cover object-center opacity-[0.28] saturate-[0.85] " +
+              "w-full h-full object-cover object-center opacity-60 saturate-110 brightness-110 contrast-105 " +
               (reduce ? "" : "animate-hero-zoom")
             }
           />
         </motion.div>
         {/* Readability overlays: flat dark tint + radial focus + bottom fade into page */}
-        <div className="absolute inset-0 bg-navy-950/70" />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-950 via-navy-950/35 to-navy-950" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(2,6,23,0)_0%,rgba(2,6,23,0.55)_75%,rgba(2,6,23,0.9)_100%)]" />
+        <div className="absolute inset-0 bg-navy-950/35" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/80 via-navy-950/15 to-navy-950" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(2,6,23,0)_0%,rgba(2,6,23,0.35)_75%,rgba(2,6,23,0.75)_100%)]" />
         {/* Restrained cyan glow behind the headline area */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[640px] h-[420px] bg-brand-500/10 rounded-full blur-3xl" />
       </div>
@@ -79,7 +79,7 @@ export default function HeroSection() {
           initial={reduce ? { opacity: 0 } : { opacity: 0, y: 26 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.08 }}
-          className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.04] tracking-tight mb-6"
+          className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.04] tracking-tight mb-6 [text-shadow:0_2px_24px_rgba(2,6,23,0.85),0_1px_3px_rgba(2,6,23,0.9)]"
         >
           {line1}
           <br />
@@ -92,7 +92,7 @@ export default function HeroSection() {
           initial={reduce ? { opacity: 0 } : { opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.18 }}
-          className="text-base sm:text-lg text-slate-300/90 leading-relaxed max-w-2xl mx-auto mb-8"
+          className="text-base sm:text-lg text-slate-200 leading-relaxed max-w-2xl mx-auto mb-8 [text-shadow:0_1px_16px_rgba(2,6,23,0.9)]"
         >
           {content.subheadline}
         </motion.p>
