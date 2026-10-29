@@ -37,7 +37,6 @@ export const brand = {
   tagline: "AI-Assisted Creator Growth & Social Media Marketing",
   email: "hello@mediasmakers.com",
   domain: "mediasmakers.com",
-  location: "Morocco",
   year: new Date().getFullYear(),
 };
 
@@ -172,9 +171,9 @@ export const homeContent = {
   hero: {
     headline: "Grow Your Audience.\nBuild Your Brand.",
     subheadline:
-      "MediasMakers helps creators, independent musicians, streamers, and small businesses grow their social media presence with AI-assisted strategies and expert guidance.",
-    cta: "See Our Services",
-    secondaryCta: "How It Works",
+      "Your next stage of growth starts with a strategy. Get AI-assisted insights, personalized content roadmaps, and practical guidance designed around your goals — without expensive agencies or fake followers.",
+    cta: "Build My Growth Plan",
+    secondaryCta: "Explore Our Services",
   },
 
   problems: {
@@ -293,7 +292,7 @@ export const homeContent = {
       },
       {
         q: "What currencies do you accept?",
-        a: "We display prices in EUR and MAD (Moroccan Dirham). Payment processing will be set up to accept major currencies. Contact us if you need a custom arrangement.",
+        a: "We display prices in EUR and MAD. Payment processing will be set up to accept major currencies. Contact us if you need a custom arrangement.",
       },
       {
         q: "Is my information kept confidential?",
@@ -415,7 +414,7 @@ export const aboutContent = {
     paragraphs: [
       "MediasMakers was born from a simple observation: creators, musicians, and small businesses need professional social media marketing, but traditional agencies are built for companies with big budgets. Independent creators were left figuring it out alone.",
       "We believe that shouldn't be the case. Quality marketing strategy and content planning should be accessible to everyone building something meaningful online — not just those who can afford €2,000/month retainers.",
-      "Based in Morocco and serving clients internationally, MediasMakers combines AI-assisted workflows with human expertise to deliver professional-quality marketing support at prices that make sense for independent creators and small businesses.",
+      "Serving clients internationally, MediasMakers combines AI-assisted workflows with human expertise to deliver professional-quality marketing support at prices that make sense for independent creators and small businesses.",
     ],
   },
   values: [
@@ -437,7 +436,7 @@ export const aboutContent = {
     {
       title: "Global Perspective",
       description:
-        "Based in Morocco, serving the world. We understand both local and international markets and can help you reach audiences wherever they are.",
+        "Serving the world from day one. We understand diverse markets and can help you reach audiences wherever they are.",
     },
   ],
 };
@@ -452,7 +451,7 @@ export const contactContent = {
   },
   info: [
     { label: "Email", value: "hello@mediasmakers.com" },
-    { label: "Location", value: "Morocco" },
+    { label: "Coverage", value: "Global — serving clients worldwide" },
     { label: "Response Time", value: "Within 24–48 hours" },
   ],
   form: {
@@ -584,7 +583,7 @@ export const legalContent = {
       {
         heading: "Governing Law",
         content:
-          "These terms are governed by the laws of Morocco. Any disputes shall be resolved through good-faith negotiation first, and if necessary, through the courts of competent jurisdiction in Morocco.",
+          "These terms are governed by the laws of the jurisdiction in which MediasMakers is registered (to be confirmed before public launch). Any disputes shall be resolved through good-faith negotiation first, and if necessary, through the courts of competent jurisdiction.",
       },
       {
         heading: "Changes to Terms",

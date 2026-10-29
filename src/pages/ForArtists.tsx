@@ -3,6 +3,7 @@ import { Music, Mic2, Headphones, Radio, CheckCircle, AlertTriangle } from "luci
 import { forArtistsContent } from "../config/site";
 import PageHero from "../components/PageHero";
 import CTASection from "../components/CTASection";
+import ImageShowcase from "../components/ImageShowcase";
 
 export default function ForArtists() {
   const content = forArtistsContent;
@@ -14,6 +15,19 @@ export default function ForArtists() {
         subtitle={content.hero.subtitle}
         badge="For Artists & Musicians"
       />
+
+      {/* Made for Artists — supplied brand imagery (release.png) */}
+      <section className="py-12 lg:py-16 border-b border-white/5">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ImageShowcase
+            src="/release.png"
+            alt="Independent musician release campaign visual for MediasMakers artist growth strategy"
+            className="w-full"
+            parallax={16}
+            caption="Your next release deserves more than a post."
+          />
+        </div>
+      </section>
 
       {/* Challenges */}
       <section className="py-16">
@@ -136,8 +150,8 @@ export default function ForArtists() {
       <CTASection
         title="Let's Get Your Music Heard"
         description="Start with a Creator Audit to understand your current social media position, or jump straight into a Content Pack built for musicians."
-        ctaText="See Our Packages"
-        ctaLink="/services"
+        ctaText="Plan My Next Release"
+        ctaLink="/get-started"
         secondaryText="Contact Us"
         secondaryLink="/contact"
       />

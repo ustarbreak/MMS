@@ -15,7 +15,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { AdminProfile, Order, ORDER_STATUS_LABELS, ORDER_STATUS_COLORS } from '../lib/supabase';
-import { getCurrentAdmin, signOut, isDemoMode } from '../lib/authService';
+import { getCurrentAdmin, signOut, effectiveDemoMode } from '../lib/authService';
 import { getAllOrders, getOrderStats } from '../lib/orderService';
 
 // Mock data for demo mode
@@ -49,7 +49,7 @@ const mockOrders: Order[] = [
     order_reference: 'MM-DEMO0002',
     customer_name: 'Ahmed Benali',
     customer_email: 'ahmed.benali@example.com',
-    customer_country: 'Morocco',
+    customer_country: 'France',
     product_id: 'product-2',
     product_name: 'Creator Content Pack',
     price_eur: 19,
@@ -125,7 +125,7 @@ export default function AdminDashboard() {
       setAdmin(admin);
 
       // Use mock data in demo mode, otherwise fetch from Supabase
-      if (isDemoMode()) {
+      if (effectiveDemoMode()) {
         setOrders(mockOrders);
         setStats(mockStats);
         setLoading(false);

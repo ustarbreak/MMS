@@ -9,7 +9,7 @@ const navLinks = [
   { to: "/services", label: "Services" },
   { to: "/for-artists", label: "For Artists" },
   { to: "/how-it-works", label: "How It Works" },
-  { to: "/about", label: "About" },
+  { to: "/about", label: "Our Promise" },
   { to: "/contact", label: "Contact" },
 ];
 
@@ -70,7 +70,7 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              to="/services"
+              to="/get-started"
               className="ml-3 px-5 py-2.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-500 rounded-lg transition-all hover:shadow-lg hover:shadow-brand-600/20"
             >
               Get Started
@@ -131,7 +131,7 @@ export default function Navbar() {
                 </Link>
               ))}
               <Link
-                to="/services"
+                to="/get-started"
                 className="block mt-3 px-4 py-3 text-center text-sm font-semibold text-white bg-brand-600 rounded-lg"
               >
                 Get Started

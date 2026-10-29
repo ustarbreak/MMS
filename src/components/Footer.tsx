@@ -40,7 +40,7 @@ export default function Footer() {
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm mb-4">
               AI-assisted social media marketing for creators, independent musicians,
-              streamers, and small businesses. Based in Morocco, serving globally.
+              streamers, and small businesses. Serving creators worldwide.
             </p>
             <p className="text-slate-500 text-xs">
               {brand.email}
@@ -105,7 +105,7 @@ export default function Footer() {
             © {brand.year} {brand.name}. All rights reserved.
           </p>
           <p className="text-xs text-slate-600">
-            {brand.location} · Serving creators worldwide
+            Serving creators worldwide
           </p>
         </div>
       </div>

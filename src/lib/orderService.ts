@@ -6,6 +6,66 @@
  */
 
 import { supabase, Order, OrderStatus, Product } from './supabase';
+import { effectiveDemoMode } from './authService';
+
+/**
+ * Sample orders used ONLY in frontend demo mode (clearly labeled in the UI).
+ * These never touch the backend and are not presented as real data.
+ */
+const DEMO_ORDERS: Order[] = [
+  {
+    id: 'demo-order-1',
+    order_reference: 'MM-DEMO1234',
+    customer_name: 'Sample Creator',
+    customer_email: 'sample@example.com',
+    customer_country: 'France',
+    product_id: 'creator-audit',
+    product_name: 'Creator Audit',
+    price_eur: 9,
+    price_mad: 100,
+    currency: 'EUR',
+    requirements: { platform: 'Instagram', niche: 'Music', goals: 'Grow local audience' },
+    status: 'paid',
+    payment_confirmed_at: new Date().toISOString(),
+    payment_notes: null,
+    delivered_at: null,
+    delivery_notes: null,
+    internal_notes: 'Demo order — sample data only.',
+    verification_token: null,
+    verification_token_expires_at: null,
+    verification_token_used: false,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'demo-order-2',
+    order_reference: 'MM-DEMO5678',
+    customer_name: 'Demo Artist',
+    customer_email: 'artist@example.com',
+    customer_country: 'Spain',
+    product_id: 'content-pack',
+    product_name: 'Creator Content Pack',
+    price_eur: 19,
+    price_mad: 210,
+    currency: 'EUR',
+    requirements: { platform: 'TikTok', niche: 'Gaming', goals: 'More shorts ideas' },
+    status: 'in_progress',
+    payment_confirmed_at: new Date().toISOString(),
+    payment_notes: null,
+    delivered_at: null,
+    delivery_notes: null,
+    internal_notes: 'Demo order — sample data only.',
+    verification_token: null,
+    verification_token_expires_at: null,
+    verification_token_used: false,
+    created_at: new Date(Date.now() - 86400000).toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+];
+
+function findDemoOrder(idOrReference: string): Order | undefined {
+  return DEMO_ORDERS.find((o) => o.id === idOrReference || o.order_reference === idOrReference);
+}
 
 // ─── VALIDATION ───────────────────────────────────────────────────────────────
 
@@ -426,6 +486,12 @@ export async function getOrderById(id: string): Promise<{
   order?: Order;
   error?: string;
 }> {
+  // Demo mode: serve sample orders without touching the backend
+  if (effectiveDemoMode()) {
+    const demo = findDemoOrder(id);
+    return demo ? { order: demo } : { error: 'Order not found' };
+  }
+
   const { data, error } = await supabase
     .from('orders')
     .select('*')
@@ -450,6 +516,16 @@ export async function updateOrderStatus(
   notes?: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
+    // Demo mode: mutate sample data in memory only — never touches the backend
+    if (effectiveDemoMode()) {
+      const demo = findDemoOrder(orderId);
+      if (!demo) return { success: false, error: 'Order not found' };
+      demo.status = newStatus;
+      if (notes) demo.internal_notes = notes;
+      demo.updated_at = new Date().toISOString();
+      return { success: true };
+    }
+
     // Get current order
     const { data: currentOrder, error: fetchError } = await supabase
       .from('orders')
@@ -521,6 +597,15 @@ export async function updateOrderNotes(
   orderId: string,
   notes: string
 ): Promise<{ success: boolean; error?: string }> {
+  // Demo mode: in-memory sample data only
+  if (effectiveDemoMode()) {
+    const demo = findDemoOrder(orderId);
+    if (!demo) return { success: false, error: 'Order not found' };
+    demo.internal_notes = sanitizeString(notes);
+    demo.updated_at = new Date().toISOString();
+    return { success: true };
+  }
+
   const { error } = await supabase
     .from('orders')
     .update({ internal_notes: sanitizeString(notes) })

@@ -14,6 +14,22 @@ export function isDemoMode(): boolean {
 }
 
 /**
+ * Force demo mode ON for the current browser tab (frontend-only preview).
+ * This does NOT touch the backend — it only enables the clearly-labeled
+ * sample-data views so visitors can explore the admin console UI.
+ */
+export function enableForcedDemoMode(): void {
+  sessionStorage.setItem('demo_mode_forced', 'true');
+}
+
+/**
+ * Effective demo mode: configured via env var OR forced from the UI.
+ */
+export function effectiveDemoMode(): boolean {
+  return isDemoMode() || sessionStorage.getItem('demo_mode_forced') === 'true';
+}
+
+/**
  * Sign in admin user
  */
 export async function signIn(email: string, password: string): Promise<{
@@ -68,10 +84,9 @@ export async function signIn(email: string, password: string): Promise<{
  * Sign out admin user
  */
 export async function signOut(): Promise<void> {
-  // Clear demo session if in demo mode
-  if (isDemoMode()) {
-    sessionStorage.removeItem('demo_admin');
-  }
+  // Clear demo sessions
+  sessionStorage.removeItem('demo_admin');
+  sessionStorage.removeItem('demo_mode_forced');
   
   await supabase.auth.signOut();
 }
@@ -85,7 +100,7 @@ export async function getCurrentAdmin(): Promise<{
 }> {
   try {
     // Demo mode: return demo admin without checking Supabase
-    if (isDemoMode()) {
+    if (effectiveDemoMode() || sessionStorage.getItem('demo_admin') === 'true') {
       const demoSession = sessionStorage.getItem('demo_admin');
       if (demoSession === 'true') {
         return {
@@ -134,7 +149,7 @@ export async function demoSignIn(): Promise<{
   success: boolean;
   error?: string;
 }> {
-  if (!isDemoMode()) {
+  if (!effectiveDemoMode()) {
     return { success: false, error: 'Demo mode is not enabled' };
   }
 
